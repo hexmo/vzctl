@@ -9,6 +9,8 @@ from vzctl.config import EnvironmentConfig, NodeConfig
 _SYNC_ENDPOINT = "/1.0/environment/control/rest/addcontainerenvvars"
 _DELETE_ENDPOINT = "/1.0/environment/control/rest/removecontainerenvvars"
 _LIST_ENDPOINT = "/1.0/environment/control/rest/getcontainerenvvars"
+_RESTART_ENDPOINT = "/1.0/environment/control/rest/restartnodes"
+_READLOG_ENDPOINT = "/1.0/environment/control/rest/readlog"
 
 
 class APIError(Exception):
@@ -69,3 +71,31 @@ def delete_var(env: EnvironmentConfig, node: NodeConfig, key: str) -> dict:
             },
         )
     return _check_response(resp, node)
+
+
+def restart_node(env: EnvironmentConfig, node: NodeConfig) -> dict:
+    with httpx.Client() as client:
+        resp = client.post(
+            f"{_base_url(env)}{_RESTART_ENDPOINT}",
+            data={
+                "session": env.api_token,
+                "envName": env.name,
+                "nodeId": node.id,
+            },
+        )
+    return _check_response(resp, node)
+
+
+def read_log(env: EnvironmentConfig, node: NodeConfig, path: str, count: int | None = None) -> str:
+    data: dict = {
+        "session": env.api_token,
+        "envName": env.name,
+        "nodeId": node.id,
+        "path": path,
+    }
+    if count is not None:
+        data["count"] = count
+    with httpx.Client() as client:
+        resp = client.post(f"{_base_url(env)}{_READLOG_ENDPOINT}", data=data)
+    body = _check_response(resp, node)
+    return body.get("body", "")

@@ -16,13 +16,13 @@ I built `vzctl` to fix that. Define your variables once in a `config.yaml` file 
 
 ## Features
 
-| Command        | Description                                                   |
-| -------------- | ------------------------------------------------------------- |
-| `vzctl sync`   | Push all variables from `config.yaml` to every node           |
-| `vzctl list`   | Display current variables on nodes; optionally export to CSV  |
-| `vzctl delete` | Delete a variable from every node in an environment           |
-
-Planned additions: node restart, log download, and more.
+| Command          | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `vzctl sync`     | Push all variables from `config.yaml` to every node           |
+| `vzctl list`     | Display current variables on nodes; optionally export to CSV  |
+| `vzctl delete`   | Delete a variable from every node in an environment           |
+| `vzctl restart`  | Restart all nodes or specific nodes                           |
+| `vzctl logs`     | Fetch and display log files from nodes                        |
 
 ---
 
@@ -124,6 +124,27 @@ uv run vzctl delete --env staging --key SECRET_KEY
 
 # Delete without confirmation prompt
 uv run vzctl delete --env staging --key SECRET_KEY --yes
+
+# Restart all nodes in staging (prompts for confirmation)
+uv run vzctl restart --env staging
+
+# Restart specific nodes by nickname
+uv run vzctl restart --env staging --node api --node celery
+
+# Restart without confirmation prompt
+uv run vzctl restart --env staging --yes
+
+# Fetch logs from all nodes (default: /var/log/run.log)
+uv run vzctl logs --env staging
+
+# Fetch logs from a specific node
+uv run vzctl logs --env staging --node api
+
+# Fetch last 50 lines from a custom log path
+uv run vzctl logs --env staging --path /var/log/nginx/error.log --count 50
+
+# Save logs to files (one file per node: <nickname>_<id>.log)
+uv run vzctl logs --env staging --output ./logs
 
 # Use a config file at a custom path
 uv run vzctl sync --env staging --config /path/to/config.yaml
