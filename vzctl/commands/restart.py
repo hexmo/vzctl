@@ -69,15 +69,16 @@ def restart(
     failed = 0
 
     for n in target_nodes:
-        try:
-            api.restart_node(env_cfg, n)
-            table.add_row(n.nickname, str(n.id), "[green]✓ Restarted[/green]")
-        except api.APIError as exc:
-            table.add_row(n.nickname, str(n.id), f"[red]✗ {exc}[/red]")
-            failed += 1
-        except Exception as exc:
-            table.add_row(n.nickname, str(n.id), f"[red]✗ {exc}[/red]")
-            failed += 1
+        with console.status(f"Restarting [cyan]{n.nickname}[/cyan] ({n.id})…"):
+            try:
+                api.restart_node(env_cfg, n)
+                table.add_row(n.nickname, str(n.id), "[green]✓ Restarted[/green]")
+            except api.APIError as exc:
+                table.add_row(n.nickname, str(n.id), f"[red]✗ {exc}[/red]")
+                failed += 1
+            except Exception as exc:
+                table.add_row(n.nickname, str(n.id), f"[red]✗ {exc}[/red]")
+                failed += 1
 
     console.print(table)
 

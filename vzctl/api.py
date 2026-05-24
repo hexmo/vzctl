@@ -74,7 +74,7 @@ def delete_var(env: EnvironmentConfig, node: NodeConfig, key: str) -> dict:
 
 
 def restart_node(env: EnvironmentConfig, node: NodeConfig) -> dict:
-    with httpx.Client() as client:
+    with httpx.Client(timeout=120.0) as client:
         resp = client.post(
             f"{_base_url(env)}{_RESTART_ENDPOINT}",
             data={
