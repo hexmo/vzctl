@@ -6,9 +6,11 @@ A command-line tool for managing environment variables and nodes on [Virtuozzo A
 
 ## Why This Exists
 
-Managing environment variables through the [Yeti Cloud](https://datahub.com.np/yeti-cloud/) web dashboard is painful. Every time you need to update a variable, you have to log in, navigate to the right environment, click into each node one by one, and manually edit values. Miss a node and your app is broken. Do it across staging and production and it becomes a time sink.
+Recently, I was working on deploying a Django project on [Yeti Cloud](https://datahub.com.np/yeti-cloud/) i.e. based on [Virtuozzo Application Platform](https://www.virtuozzo.com/application-management-docs/). The web dashboard is painful to use. Every time you need to update an ENVIRONMENT variable, you have to log in, navigate to the right environment, click into each node one by one, and manually edit values. Miss a node and your app is broken. Do it across staging and production and it becomes a very time consuming process so I wasted more time and made this CLI tool.
 
-I built `vzctl` to fix that. Define your variables once in a `config.yaml` file and push them to every node in one command. It works with Yeti Cloud and any other PaaS built on Virtuozzo.
+[![spend 10 minutes doing the task manually vs spend 10 hours writing code to automate it](docs/images/image.png)](https://starecat.com/spend-10-minutes-doing-the-task-manually-vs-spend-10-hours-writing-code-to-automate-it-drake/)
+
+I built `vzctl` to fix that. Define your variables once in a `config.yaml` file and push them to every node in one command. It works with any PaaS built on Virtuozzo.
 
 ---
 
@@ -41,7 +43,7 @@ uv sync
 
 ### 3. Get your API token
 
-Log in to your Virtuozzo PaaS dashboard. Your session token is available under account settings or in the browser's developer tools after login. On Yeti Cloud, go to [datahub.com.np/yeti-cloud](https://datahub.com.np/yeti-cloud/) → Account → Access Tokens.
+Log in to your Virtuozzo PaaS dashboard. Your session token is available under account settings or in the browser's developer tools after login.
 
 ### 4. Create your config
 

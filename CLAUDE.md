@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-`vzctl` is a Python CLI tool for managing environment variables and nodes on [Virtuozzo Application Platform](https://www.virtuozzo.com/application-management-docs/) (formerly Jelastic). It is provider-agnostic — any PaaS running on Virtuozzo is supported (originally built for [Yeti Cloud](https://datahub.com.np/yeti-cloud/)). The tool is open-source.
+`vzctl` is a Python CLI tool for managing environment variables and nodes on [Virtuozzo Application Platform](https://www.virtuozzo.com/application-management-docs/) (formerly Jelastic). It is provider-agnostic — any PaaS running on Virtuozzo is supported. The tool is open-source.
 
 ## Setup & Running
 
@@ -36,14 +36,14 @@ api_token: "your-session-token"                    # global default
 
 environments:
   staging:
-    name: firiri-staging
+    name: my-app-staging
     # api_url / api_token can be overridden per-environment
     nodes:
-      - id: 25245
+      - id: 10001
         nickname: api
-      - id: 25246
+      - id: 10002
         nickname: celery
-      - id: 25247
+      - id: 10003
         nickname: beat
     variables:
       DEBUG: "True"
