@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["urlencode"]
+  "cSpell.words": [
+    "httpx",
+    "pyyaml",
+    "typer",
+    "urlencode",
+    "Virtuozzo",
+    "virtuzzo",
+    "vzctl"
+  ]
 }

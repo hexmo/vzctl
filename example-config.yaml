@@ -1,0 +1,42 @@
+# vzctl configuration
+#
+# Copy this file to config.yaml and fill in your real values.
+# config.yaml is gitignored — never commit it.
+
+# Global Virtuozzo PaaS API endpoint and token.
+# These apply to all environments unless overridden per-environment below.
+api_url: "https://app.your-paas-provider.cloud"
+api_token: "your-api-session-token"
+
+environments:
+  staging:
+    name: your-app-staging          # environment name as shown in the PaaS dashboard
+    # api_url: "https://other.cloud" # optional: override global api_url for this env
+    # api_token: "env-token"         # optional: override global api_token for this env
+    nodes:
+      - id: 10001
+        nickname: app-1
+      - id: 10002
+        nickname: app-2
+      - id: 10003
+        nickname: worker-1
+    variables:
+      DEBUG: "True"
+      DJANGO_ENV: staging
+      SECRET_KEY: "replace-with-real-secret"
+      DATABASE_URL: "postgres://user:pass@host:5432/dbname"
+
+  production:
+    name: your-app-production
+    nodes:
+      - id: 10004
+        nickname: app-1
+      - id: 10005
+        nickname: app-2
+      - id: 10006
+        nickname: worker-1
+    variables:
+      DEBUG: "False"
+      DJANGO_ENV: production
+      SECRET_KEY: "replace-with-real-secret"
+      DATABASE_URL: "postgres://user:pass@host:5432/dbname"
