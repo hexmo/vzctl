@@ -11,6 +11,7 @@ _DELETE_ENDPOINT = "/1.0/environment/control/rest/removecontainerenvvars"
 _LIST_ENDPOINT = "/1.0/environment/control/rest/getcontainerenvvars"
 _RESTART_ENDPOINT = "/1.0/environment/control/rest/restartnodes"
 _READLOG_ENDPOINT = "/1.0/environment/control/rest/readlog"
+_REDEPLOY_ENDPOINT = "/1.0/environment/control/rest/redeploycontainers"
 
 
 class APIError(Exception):
@@ -81,6 +82,21 @@ def restart_node(env: EnvironmentConfig, node: NodeConfig) -> dict:
                 "session": env.api_token,
                 "envName": env.name,
                 "nodeId": node.id,
+            },
+        )
+    return _check_response(resp, node)
+
+
+def redeploy_node(env: EnvironmentConfig, node: NodeConfig, tag: str = "latest") -> dict:
+    with httpx.Client(timeout=300.0) as client:
+        resp = client.post(
+            f"{_base_url(env)}{_REDEPLOY_ENDPOINT}",
+            data={
+                "session": env.api_token,
+                "envName": env.name,
+                "nodeId": node.id,
+                "tag": tag,
+                "useExistingVolumes": "true",
             },
         )
     return _check_response(resp, node)
