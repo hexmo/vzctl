@@ -19,10 +19,11 @@ uv run vzctl --help
 ## Commands
 
 ```bash
-uv run vzctl sync    --env <key>                                          # push vars from config.yaml to all nodes
-uv run vzctl list    --env <key> [--output out.csv]                       # list vars in pivoted table; optional CSV export
-uv run vzctl delete  --env <key> --key VAR_NAME                           # delete a var from all nodes (confirms first)
-uv run vzctl restart --env <key> [--node <nickname-or-id>]... [--yes]    # restart all or specific nodes (confirms first)
+uv run vzctl sync    --env <key>                                                         # push vars from config.yaml to all nodes
+uv run vzctl list    --env <key> [--output out.csv]                                      # list vars in pivoted table; optional CSV export
+uv run vzctl delete  --env <key> --key VAR_NAME                                          # delete a var from all nodes (confirms first)
+uv run vzctl restart --env <key> [--node <nickname-or-id>]... [--yes]                   # restart all or specific nodes (confirms first)
+uv run vzctl deploy  --env <key> [--node <nickname-or-id>]... [--tag <tag>] [--yes]     # redeploy nodes by pulling a new image (default tag: latest)
 uv run vzctl logs    --env <key> [--node <nickname-or-id>]... [--path /var/log/run.log] [--count N] [--output <dir>]
 ```
 
@@ -58,14 +59,15 @@ environments:
 
 ```text
 vzctl/
-├── main.py          # Typer app; registers sync/list/delete/restart/logs sub-apps
+├── main.py          # Typer app; registers sync/list/delete/restart/deploy/logs sub-apps
 ├── config.py        # Loads config.yaml; resolves per-env api_url/api_token overrides
-├── api.py           # httpx-based Virtuozzo REST API client (sync_vars, list_vars, delete_var, restart_node, read_log)
+├── api.py           # httpx-based Virtuozzo REST API client (sync_vars, list_vars, delete_var, restart_node, redeploy_node, read_log)
 └── commands/
     ├── sync.py      # vzctl sync — iterates nodes, calls api.sync_vars, prints per-node status table
     ├── list_vars.py # vzctl list — fetches vars per node, pivots into S.N./KEY/node-column table
     ├── delete.py    # vzctl delete — confirms, iterates nodes, calls api.delete_var
     ├── restart.py   # vzctl restart — confirms, iterates target nodes, calls api.restart_node
+    ├── deploy.py    # vzctl deploy — confirms, iterates target nodes, calls api.redeploy_node with image tag
     └── logs.py      # vzctl logs — iterates target nodes, calls api.read_log, prints with Rich Rule headers
 ```
 

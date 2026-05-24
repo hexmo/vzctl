@@ -22,6 +22,7 @@ I built `vzctl` to fix that. Define your variables once in a `config.yaml` file 
 | `vzctl list`     | Display current variables on nodes; optionally export to CSV  |
 | `vzctl delete`   | Delete a variable from every node in an environment           |
 | `vzctl restart`  | Restart all nodes or specific nodes                           |
+| `vzctl deploy`   | Redeploy nodes by pulling a new image (default tag: `latest`) |
 | `vzctl logs`     | Fetch and display log files from nodes                        |
 
 ---
@@ -133,6 +134,18 @@ uv run vzctl restart --env staging --node api --node celery
 
 # Restart without confirmation prompt
 uv run vzctl restart --env staging --yes
+
+# Redeploy all nodes with the latest image (prompts for confirmation)
+uv run vzctl deploy --env staging
+
+# Redeploy specific nodes
+uv run vzctl deploy --env staging --node api --node celery
+
+# Redeploy with a specific image tag
+uv run vzctl deploy --env staging --tag v1.2.3
+
+# Redeploy without confirmation prompt
+uv run vzctl deploy --env staging --yes
 
 # Fetch logs from all nodes (default: /var/log/run.log)
 uv run vzctl logs --env staging
